@@ -259,7 +259,7 @@ class OrangeNavigatorObserver extends NavigatorObserver {
 
   @override
   void didPop(Route route, Route previousRoute) {
-    if (route is Router) {
+    if (route is OrangePageRoute) {
       Router.notifyPopFlutterView();
     }
     Router._history.remove(route);
