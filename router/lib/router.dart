@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:flutter/material.dart';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class Router {
@@ -13,8 +13,9 @@ class Router {
   }
 
   static final GlobalKey<NavigatorState> _globalKeyForRouter = GlobalKey();
-  static final GlobalKey<RouteAppState> _globalKeyForRouteApp = GlobalKey();
+  static final GlobalKey<_RouteAppState> _globalKeyForRouteApp = GlobalKey();
   static final List<Route<dynamic>> _history = [];
+  static final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 
   static void _init() {
     _registerMethodHandler();
@@ -187,11 +188,11 @@ class RouteApp extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return RouteAppState();
+    return _RouteAppState();
   }
 }
 
-class RouteAppState extends State<RouteApp> {
+class _RouteAppState extends State<RouteApp> {
   List<NavigatorObserver> _navigatorObservers = [OrangeNavigatorObserver()];
 
   @override
