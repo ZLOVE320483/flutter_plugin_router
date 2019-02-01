@@ -2,6 +2,7 @@ package com.zlove.router;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.app.Activity;
 import android.app.Application;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -54,11 +55,11 @@ public final class FlutterRouteDelegate implements FlutterActivityEvents,
     private ImageView mCoverView;
     private Bitmap mCoverBitmap;
 
-    private final FlutterRouteActivity activity;
+    private final Activity activity;
     private FlutterView flutterView;
     private View launchView;
 
-    FlutterRouteDelegate(FlutterRouteActivity activity) {
+    FlutterRouteDelegate(Activity activity) {
         this.activity = Preconditions.checkNotNull(activity);
     }
 
@@ -426,7 +427,13 @@ public final class FlutterRouteDelegate implements FlutterActivityEvents,
      * Returns null if no {@code windowBackground} is set for the activity.
      */
     private View createLaunchView() {
-        final Drawable launchScreenDrawable = activity.getTransitionScreenDrawable();
+        Drawable launchScreenDrawable = null;
+        if (activity instanceof FlutterRouteActivity) {
+            launchScreenDrawable = ((FlutterRouteActivity) activity).getTransitionScreenDrawable();
+        }
+        if (activity instanceof FlutterRouteFragmentActivity) {
+            launchScreenDrawable = ((FlutterRouteFragmentActivity) activity).getTransitionScreenDrawable();
+        }
         if (launchScreenDrawable == null) {
             return null;
         }
@@ -530,7 +537,13 @@ public final class FlutterRouteDelegate implements FlutterActivityEvents,
             mCoverView.setVisibility(View.INVISIBLE);
             mCoverBitmap = null;
         }
-        activity.onFrameShown();
+        if (activity instanceof FlutterRouteActivity) {
+            ((FlutterRouteActivity) activity).onFrameShown();
+        }
+        if (activity instanceof FlutterRouteFragmentActivity) {
+            ((FlutterRouteFragmentActivity) activity).onFrameShown();
+        }
+
     }
 
     @Override
